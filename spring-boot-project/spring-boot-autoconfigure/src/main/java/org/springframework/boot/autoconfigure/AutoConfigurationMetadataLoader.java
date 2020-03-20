@@ -16,15 +16,15 @@
 
 package org.springframework.boot.autoconfigure;
 
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Set;
-
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * Internal utility used to load {@link AutoConfigurationMetadata}.
@@ -44,15 +44,17 @@ final class AutoConfigurationMetadataLoader {
 
 	static AutoConfigurationMetadata loadMetadata(ClassLoader classLoader, String path) {
 		try {
+			// 读取spring-boog-autoconfigure.jar中的spring-autoconfigure-metadata.properties生成url枚举对象
 			Enumeration<URL> urls = (classLoader != null) ? classLoader.getResources(path)
 					: ClassLoader.getSystemResources(path);
 			Properties properties = new Properties();
+			// 解析url数据
 			while (urls.hasMoreElements()) {
 				properties.putAll(PropertiesLoaderUtils.loadProperties(new UrlResource(urls.nextElement())));
 			}
+			// 返回AutoConfigurationMetadata
 			return loadMetadata(properties);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalArgumentException("Unable to load @ConditionalOnClass location [" + path + "]", ex);
 		}
 	}

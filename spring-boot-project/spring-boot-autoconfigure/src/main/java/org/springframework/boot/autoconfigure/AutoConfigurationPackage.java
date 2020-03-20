@@ -16,6 +16,8 @@
 
 package org.springframework.boot.autoconfigure;
 
+import org.springframework.context.annotation.Import;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -23,21 +25,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.context.annotation.Import;
-
 /**
  * Indicates that the package containing the annotated class should be registered with
  * {@link AutoConfigurationPackages}.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see AutoConfigurationPackages
+ * @since 1.3.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import(AutoConfigurationPackages.Registrar.class)
+@Import(AutoConfigurationPackages.Registrar.class)    // 将Registrar组件导入到容器 作用是在容器启动时将启动主类对应的包及包下的组件加入到容器
 public @interface AutoConfigurationPackage {
 
 }

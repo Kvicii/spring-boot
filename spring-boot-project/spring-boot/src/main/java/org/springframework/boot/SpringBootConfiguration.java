@@ -16,15 +16,15 @@
 
 package org.springframework.boot;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.AliasFor;
 
 /**
  * Indicates that a class provides Spring Boot application
@@ -65,6 +65,7 @@ public @interface SpringBootConfiguration {
 	 * individually like when declared on non-{@code @Configuration} classes, a.k.a.
 	 * "@Bean Lite Mode" (see {@link Bean @Bean's javadoc}). It is therefore behaviorally
 	 * equivalent to removing the {@code @Configuration} stereotype.
+	 *
 	 * @return whether to proxy {@code @Bean} methods
 	 * @since 2.2
 	 */

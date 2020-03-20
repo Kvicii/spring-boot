@@ -16,13 +16,6 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,6 +25,13 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Enable auto-configuration of the Spring Application Context, attempting to guess and
@@ -68,25 +68,26 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  *
  * @author Phillip Webb
  * @author Stephane Nicoll
- * @since 1.0.0
  * @see ConditionalOnBean
  * @see ConditionalOnMissingBean
  * @see ConditionalOnClass
  * @see AutoConfigureAfter
  * @see SpringBootApplication
+ * @since 1.0.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@AutoConfigurationPackage
-@Import(AutoConfigurationImportSelector.class)
+@AutoConfigurationPackage    // 将SpringBootApplication标注的类所在的包名下的类进行扫描 添加到容器中
+@Import(AutoConfigurationImportSelector.class)    // 可以帮助springboot应用将符合条件的@Configuration配置类都加载到当前spring容器
 public @interface EnableAutoConfiguration {
 
 	String ENABLED_OVERRIDE_PROPERTY = "spring.boot.enableautoconfiguration";
 
 	/**
 	 * Exclude specific auto-configuration classes such that they will never be applied.
+	 *
 	 * @return the classes to exclude
 	 */
 	Class<?>[] exclude() default {};
@@ -94,6 +95,7 @@ public @interface EnableAutoConfiguration {
 	/**
 	 * Exclude specific auto-configuration class names such that they will never be
 	 * applied.
+	 *
 	 * @return the class names to exclude
 	 * @since 1.3.0
 	 */
