@@ -66,7 +66,7 @@
 		<elasticsearch.version>6.8.6</elasticsearch.version>
 		<glassfish-el.version>3.0.3</glassfish-el.version>
 		<glassfish-jaxb.version>2.3.2</glassfish-jaxb.version>
-		<groovy.version>2.5.9</groovy.version>
+		<groovy.version>2.5.10</groovy.version>
 		<gson.version>2.8.6</gson.version>
 		<h2.version>1.4.200</h2.version>
 		<hamcrest.version>2.1</hamcrest.version>
@@ -171,7 +171,7 @@
 		<quartz.version>2.3.2</quartz.version>
 		<querydsl.version>4.2.2</querydsl.version>
 		<rabbit-amqp-client.version>5.7.3</rabbit-amqp-client.version>
-		<reactor-bom.version>Dysprosium-SR5</reactor-bom.version>
+		<reactor-bom.version>Dysprosium-BUILD-SNAPSHOT</reactor-bom.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<reactive-streams.version>1.0.3</reactive-streams.version>
 		<rsocket.version>1.0.0-RC6</rsocket.version>
@@ -188,11 +188,11 @@
 		<spring-amqp.version>2.2.5.RELEASE</spring-amqp.version>
 		<spring-batch.version>4.2.1.RELEASE</spring-batch.version>
 		<spring-cloud-connectors.version>2.0.7.RELEASE</spring-cloud-connectors.version>
-		<spring-data-releasetrain.version>Moore-SR5</spring-data-releasetrain.version>
-		<spring-framework.version>5.2.4.RELEASE</spring-framework.version>
+		<spring-data-releasetrain.version>Moore-BUILD-SNAPSHOT</spring-data-releasetrain.version>
+		<spring-framework.version>5.2.5.BUILD-SNAPSHOT</spring-framework.version>
 		<spring-hateoas.version>1.0.3.RELEASE</spring-hateoas.version>
 		<spring-integration.version>5.2.4.RELEASE</spring-integration.version>
-		<spring-kafka.version>2.3.6.RELEASE</spring-kafka.version>
+		<spring-kafka.version>2.3.7.BUILD-SNAPSHOT</spring-kafka.version>
 		<spring-ldap.version>2.3.2.RELEASE</spring-ldap.version>
 		<spring-restdocs.version>2.0.4.RELEASE</spring-restdocs.version>
 		<spring-retry.version>1.2.5.RELEASE</spring-retry.version>
