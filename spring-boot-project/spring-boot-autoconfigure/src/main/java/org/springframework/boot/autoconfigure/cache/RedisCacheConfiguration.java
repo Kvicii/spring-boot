@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.cache.CacheProperties.Redis;
@@ -37,6 +34,9 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+
 /**
  * Redis cache configuration.
  *
@@ -54,9 +54,9 @@ class RedisCacheConfiguration {
 
 	@Bean
 	RedisCacheManager cacheManager(CacheProperties cacheProperties, CacheManagerCustomizers cacheManagerCustomizers,
-			ObjectProvider<org.springframework.data.redis.cache.RedisCacheConfiguration> redisCacheConfiguration,
-			ObjectProvider<RedisCacheManagerBuilderCustomizer> redisCacheManagerBuilderCustomizers,
-			RedisConnectionFactory redisConnectionFactory, ResourceLoader resourceLoader) {
+								   ObjectProvider<org.springframework.data.redis.cache.RedisCacheConfiguration> redisCacheConfiguration,
+								   ObjectProvider<RedisCacheManagerBuilderCustomizer> redisCacheManagerBuilderCustomizers,
+								   RedisConnectionFactory redisConnectionFactory, ResourceLoader resourceLoader) {
 		RedisCacheManagerBuilder builder = RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(
 				determineConfiguration(cacheProperties, redisCacheConfiguration, resourceLoader.getClassLoader()));
 		List<String> cacheNames = cacheProperties.getCacheNames();
