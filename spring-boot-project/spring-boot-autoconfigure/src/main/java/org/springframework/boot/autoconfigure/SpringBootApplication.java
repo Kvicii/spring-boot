@@ -49,15 +49,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@SpringBootConfiguration    // 标明该类为配置类
+@SpringBootConfiguration // 标明该类为配置类
 @EnableAutoConfiguration // 启动自动配置功能
-@ComponentScan(excludeFilters = {@Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),    // 包扫描器
-		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)})
+@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class), // 包扫描器
+		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 public @interface SpringBootApplication {
 
 	/**
 	 * Exclude specific auto-configuration classes such that they will never be applied.
-	 *
 	 * @return the classes to exclude
 	 */
 	@AliasFor(annotation = EnableAutoConfiguration.class)
@@ -66,7 +65,6 @@ public @interface SpringBootApplication {
 	/**
 	 * Exclude specific auto-configuration class names such that they will never be
 	 * applied.
-	 *
 	 * @return the class names to exclude
 	 * @since 1.3.0
 	 */
@@ -82,7 +80,6 @@ public @interface SpringBootApplication {
 	 * scanning or Spring Data {@link Repository} scanning. For those you should add
 	 * {@link org.springframework.boot.autoconfigure.domain.EntityScan @EntityScan} and
 	 * {@code @Enable...Repositories} annotations.
-	 *
 	 * @return base packages to scan
 	 * @since 1.3.0
 	 */
@@ -101,7 +98,6 @@ public @interface SpringBootApplication {
 	 * scanning or Spring Data {@link Repository} scanning. For those you should add
 	 * {@link org.springframework.boot.autoconfigure.domain.EntityScan @EntityScan} and
 	 * {@code @Enable...Repositories} annotations.
-	 *
 	 * @return base packages to scan
 	 * @since 1.3.0
 	 */
@@ -127,7 +123,6 @@ public @interface SpringBootApplication {
 	 * individually like when declared on non-{@code @Configuration} classes, a.k.a.
 	 * "@Bean Lite Mode" (see {@link Bean @Bean's javadoc}). It is therefore behaviorally
 	 * equivalent to removing the {@code @Configuration} stereotype.
-	 *
 	 * @return whether to proxy {@code @Bean} methods
 	 * @since 2.2
 	 */

@@ -55,7 +55,6 @@ public abstract class AutoConfigurationPackages {
 	/**
 	 * Determine if the auto-configuration base packages for the given bean factory are
 	 * available.
-	 *
 	 * @param beanFactory the source bean factory
 	 * @return true if there are auto-config packages available
 	 */
@@ -65,7 +64,6 @@ public abstract class AutoConfigurationPackages {
 
 	/**
 	 * Return the auto-configuration base packages for the given bean factory.
-	 *
 	 * @param beanFactory the source bean factory
 	 * @return a list of auto-configuration packages
 	 * @throws IllegalStateException if auto-configuration is not enabled
@@ -73,7 +71,8 @@ public abstract class AutoConfigurationPackages {
 	public static List<String> get(BeanFactory beanFactory) {
 		try {
 			return beanFactory.getBean(BEAN, BasePackages.class).get();
-		} catch (NoSuchBeanDefinitionException ex) {
+		}
+		catch (NoSuchBeanDefinitionException ex) {
 			throw new IllegalStateException("Unable to retrieve @EnableAutoConfiguration base packages");
 		}
 	}
@@ -86,8 +85,7 @@ public abstract class AutoConfigurationPackages {
 	 * you don't call this method directly, but instead rely on the default convention
 	 * where the package name is set from your {@code @EnableAutoConfiguration}
 	 * configuration class or classes.
-	 *
-	 * @param registry     the bean definition registry
+	 * @param registry the bean definition registry
 	 * @param packageNames the package names to set
 	 */
 	public static void register(BeanDefinitionRegistry registry, String... packageNames) {
@@ -95,7 +93,8 @@ public abstract class AutoConfigurationPackages {
 			BeanDefinition beanDefinition = registry.getBeanDefinition(BEAN);
 			ConstructorArgumentValues constructorArguments = beanDefinition.getConstructorArgumentValues();
 			constructorArguments.addIndexedArgumentValue(0, addBasePackages(constructorArguments, packageNames));
-		} else {
+		}
+		else {
 			GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 			beanDefinition.setBeanClass(BasePackages.class);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, packageNames);
@@ -121,7 +120,6 @@ public abstract class AutoConfigurationPackages {
 
 		/**
 		 * 将项目主启动类所在目录下的Bean注册到容器
-		 *
 		 * @param metadata 标记了{@link SpringBootApplication} 的类的元数据信息
 		 * @param registry
 		 */
@@ -199,7 +197,8 @@ public abstract class AutoConfigurationPackages {
 								+ "in the default package. Automatic @Repository and "
 								+ "@Entity scanning is not enabled.");
 					}
-				} else {
+				}
+				else {
 					if (logger.isDebugEnabled()) {
 						String packageNames = StringUtils.collectionToCommaDelimitedString(this.packages);
 						logger.debug("@EnableAutoConfiguration was declared on a class in the package '" + packageNames

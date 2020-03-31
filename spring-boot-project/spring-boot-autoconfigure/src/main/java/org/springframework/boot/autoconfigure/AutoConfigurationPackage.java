@@ -37,7 +37,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import(AutoConfigurationPackages.Registrar.class)    // 将Registrar组件导入到容器 作用是在容器启动时将启动主类对应的包及包下的组件加入到容器
+@Import(AutoConfigurationPackages.Registrar.class) // 将Registrar组件导入到容器
+													// 作用是在容器启动时将启动主类对应的包及包下的组件加入到容器
 public @interface AutoConfigurationPackage {
 
 }

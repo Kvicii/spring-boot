@@ -79,15 +79,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@AutoConfigurationPackage    // 将SpringBootApplication标注的类所在的包名下的类进行扫描 添加到容器中
-@Import(AutoConfigurationImportSelector.class)    // 可以帮助springboot应用将符合条件的@Configuration配置类都加载到当前spring容器
+@AutoConfigurationPackage // 将SpringBootApplication标注的类所在的包名下的类进行扫描 添加到容器中
+@Import(AutoConfigurationImportSelector.class) // 可以帮助springboot应用将符合条件的@Configuration配置类都加载到当前spring容器
 public @interface EnableAutoConfiguration {
 
 	String ENABLED_OVERRIDE_PROPERTY = "spring.boot.enableautoconfiguration";
 
 	/**
 	 * Exclude specific auto-configuration classes such that they will never be applied.
-	 *
 	 * @return the classes to exclude
 	 */
 	Class<?>[] exclude() default {};
@@ -95,7 +94,6 @@ public @interface EnableAutoConfiguration {
 	/**
 	 * Exclude specific auto-configuration class names such that they will never be
 	 * applied.
-	 *
 	 * @return the class names to exclude
 	 * @since 1.3.0
 	 */

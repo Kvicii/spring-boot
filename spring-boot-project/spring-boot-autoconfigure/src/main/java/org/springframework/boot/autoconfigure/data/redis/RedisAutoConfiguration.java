@@ -47,11 +47,12 @@ import java.net.UnknownHostException;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
-@Import({LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class})
+@Import({ LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class })
 public class RedisAutoConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(name = "redisTemplate")    // 如果自定义了一个redisTemplate对象 那么该方法返回的对象将失效
+	@ConditionalOnMissingBean(name = "redisTemplate") // 如果自定义了一个redisTemplate对象
+														// 那么该方法返回的对象将失效
 	public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory)
 			throws UnknownHostException {
 		RedisTemplate<Object, Object> template = new RedisTemplate<>();

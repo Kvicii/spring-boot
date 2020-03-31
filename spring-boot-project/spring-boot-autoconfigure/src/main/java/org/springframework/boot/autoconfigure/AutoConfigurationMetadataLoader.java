@@ -54,7 +54,8 @@ final class AutoConfigurationMetadataLoader {
 			}
 			// 返回AutoConfigurationMetadata
 			return loadMetadata(properties);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new IllegalArgumentException("Unable to load @ConditionalOnClass location [" + path + "]", ex);
 		}
 	}
