@@ -699,6 +699,15 @@ class ConfigFileApplicationListenerTests {
 	}
 
 	@Test
+	void classpathWildcardResourceThrowsException() {
+		TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.environment,
+				"spring.config.location=classpath*:override.properties");
+		assertThatIllegalStateException()
+				.isThrownBy(() -> this.initializer.postProcessEnvironment(this.environment, this.application))
+				.withMessage("Classpath wildard patterns cannot be used as a search location");
+	}
+
+	@Test
 	void propertySourceAnnotation() {
 		SpringApplication application = new SpringApplication(WithPropertySource.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
@@ -911,6 +920,16 @@ class ConfigFileApplicationListenerTests {
 		this.initializer.postProcessEnvironment(this.environment, this.application);
 		assertThat(this.environment.getProperty("foo")).isEqualTo("spam");
 		assertThat(this.environment.getProperty("value")).isEqualTo("1234");
+	}
+
+	@Test
+	void additionalLocationWhenLocationConfiguredShouldTakesPrecedenceOverConfiguredLocation() {
+		TestPropertySourceUtils.addInlinedPropertiesToEnvironment(this.environment,
+				"spring.config.location=classpath:some.properties",
+				"spring.config.additional-location=classpath:override.properties");
+		this.initializer.postProcessEnvironment(this.environment, this.application);
+		assertThat(this.environment.getProperty("foo")).isEqualTo("bar");
+		assertThat(this.environment.getProperty("value")).isNull();
 	}
 
 	@Test

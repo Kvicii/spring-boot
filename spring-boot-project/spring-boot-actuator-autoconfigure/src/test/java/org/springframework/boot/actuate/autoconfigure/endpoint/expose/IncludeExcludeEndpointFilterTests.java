@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.actuate.autoconfigure.endpoint;
+package org.springframework.boot.actuate.autoconfigure.endpoint.expose;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,14 +32,13 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 /**
- * Tests for {@link ExposeExcludePropertyEndpointFilter}.
+ * Tests for {@link IncludeExcludeEndpointFilter}.
  *
  * @author Phillip Webb
  */
-@Deprecated
-class ExposeExcludePropertyEndpointFilterTests {
+class IncludeExcludeEndpointFilterTests {
 
-	private ExposeExcludePropertyEndpointFilter<?> filter;
+	private IncludeExcludeEndpointFilter<?> filter;
 
 	@BeforeEach
 	void setup() {
@@ -49,28 +48,30 @@ class ExposeExcludePropertyEndpointFilterTests {
 	@Test
 	void createWhenEndpointTypeIsNullShouldThrowException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new ExposeExcludePropertyEndpointFilter<>(null, new MockEnvironment(), "foo"))
+				.isThrownBy(() -> new IncludeExcludeEndpointFilter<>(null, new MockEnvironment(), "foo"))
 				.withMessageContaining("EndpointType must not be null");
 	}
 
 	@Test
 	void createWhenEnvironmentIsNullShouldThrowException() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new ExposeExcludePropertyEndpointFilter<>(ExposableEndpoint.class, null, "foo"))
+				.isThrownBy(() -> new IncludeExcludeEndpointFilter<>(ExposableEndpoint.class, null, "foo"))
 				.withMessageContaining("Environment must not be null");
 	}
 
 	@Test
 	void createWhenPrefixIsNullShouldThrowException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new ExposeExcludePropertyEndpointFilter<>(ExposableEndpoint.class, new MockEnvironment(), null))
+		assertThatIllegalArgumentException()
+				.isThrownBy(
+						() -> new IncludeExcludeEndpointFilter<>(ExposableEndpoint.class, new MockEnvironment(), null))
 				.withMessageContaining("Prefix must not be empty");
 	}
 
 	@Test
 	void createWhenPrefixIsEmptyShouldThrowException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new ExposeExcludePropertyEndpointFilter<>(ExposableEndpoint.class, new MockEnvironment(), ""))
+		assertThatIllegalArgumentException()
+				.isThrownBy(
+						() -> new IncludeExcludeEndpointFilter<>(ExposableEndpoint.class, new MockEnvironment(), ""))
 				.withMessageContaining("Prefix must not be empty");
 	}
 
@@ -121,8 +122,7 @@ class ExposeExcludePropertyEndpointFilterTests {
 		MockEnvironment environment = new MockEnvironment();
 		environment.setProperty("foo.include", "bar");
 		environment.setProperty("foo.exclude", "");
-		this.filter = new ExposeExcludePropertyEndpointFilter<>(DifferentTestExposableWebEndpoint.class, environment,
-				"foo");
+		this.filter = new IncludeExcludeEndpointFilter<>(DifferentTestExposableWebEndpoint.class, environment, "foo");
 		assertThat(match(EndpointId.of("baz"))).isTrue();
 	}
 
@@ -158,8 +158,7 @@ class ExposeExcludePropertyEndpointFilterTests {
 		MockEnvironment environment = new MockEnvironment();
 		environment.setProperty("foo.include", include);
 		environment.setProperty("foo.exclude", exclude);
-		this.filter = new ExposeExcludePropertyEndpointFilter<>(TestExposableWebEndpoint.class, environment, "foo",
-				"def");
+		this.filter = new IncludeExcludeEndpointFilter<>(TestExposableWebEndpoint.class, environment, "foo", "def");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

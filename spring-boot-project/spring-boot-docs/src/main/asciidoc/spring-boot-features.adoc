@@ -522,6 +522,7 @@ You can provide default values for your application in `application.properties` 
 These default values can then be overridden at runtime with a different file located in one of the custom locations.
 
 NOTE: If you use environment variables rather than system properties, most operating systems disallow period-separated key names, but you can use underscores instead (for example, configprop:spring.config.name[format=envvar] instead of configprop:spring.config.name[]).
+See <<boot-features-external-config-relaxed-binding-from-environment-variables>> for details.
 
 NOTE: If your application runs in a container, then JNDI properties (in `java:comp/env`) or servlet context initialization parameters can be used instead of, or as well as, environment variables or system properties.
 
@@ -911,6 +912,37 @@ This means that the binder will expect to find a constructor with the parameters
 Nested members of a `@ConstructorBinding` class (such as `Security` in the example above) will also be bound via their constructor.
 
 Default values can be specified using `@DefaultValue` and the same conversion service will be applied to coerce the `String` value to the target type of a missing property.
+By default, if no properties are bound to `Security`, the `AcmeProperties` instance will contain a `null` value for `security`.
+If you wish you return a non-null instance of `Security` even when no properties are bound to it, you can use an empty `@DefaultValue` annotation to do so:
+
+[source,java,indent=0]
+----
+	package com.example;
+	import java.net.InetAddress;
+	import java.util.List;
+
+	import org.springframework.boot.context.properties.ConfigurationProperties;
+	import org.springframework.boot.context.properties.ConstructorBinding;
+	import org.springframework.boot.context.properties.bind.DefaultValue;
+
+	@ConstructorBinding
+	@ConfigurationProperties("acme")
+	public class AcmeProperties {
+
+		private final boolean enabled;
+
+		private final InetAddress remoteAddress;
+
+		private final Security security;
+
+		public AcmeProperties(boolean enabled, InetAddress remoteAddress, @DefaultValue Security security) {
+			this.enabled = enabled;
+			this.remoteAddress = remoteAddress;
+			this.security = security;
+		}
+	}
+----
+
 
 NOTE: To use constructor binding the class must be enabled using `@EnableConfigurationProperties` or configuration property scanning.
 You cannot use constructor binding with beans that are created by the regular Spring mechanisms (e.g. `@Component` beans, beans created via `@Bean` methods or beans loaded using `@Import`)
@@ -1093,9 +1125,8 @@ NOTE: The `prefix` value for the annotation _must_ be in kebab case (lowercase a
 | Standard YAML list syntax or comma-separated values
 
 | Environment Variables
-| Upper case format with underscore as the delimiter.
-  `_` should not be used within a property name
-| Numeric values surrounded by underscores, such as `MY_ACME_1_OTHER = my.acme[1].other`
+| Upper case format with underscore as the delimiter (see <<boot-features-external-config-relaxed-binding-from-environment-variables>>).
+| Numeric values surrounded by underscores (see <<boot-features-external-config-relaxed-binding-from-environment-variables>>)`
 
 | System properties
 | Camel case, kebab case, or underscore notation
@@ -1104,6 +1135,10 @@ NOTE: The `prefix` value for the annotation _must_ be in kebab case (lowercase a
 
 TIP: We recommend that, when possible, properties are stored in lower-case kebab format, such as `my.property-name=acme`.
 
+
+
+[[boot-features-external-config-relaxed-binding-maps]]
+===== Binding Maps
 When binding to `Map` properties, if the `key` contains anything other than lowercase alpha-numeric characters or `-`, you need to use the bracket notation so that the original value is preserved.
 If the key is not surrounded by `[]`, any characters that are not alpha-numeric or `-` are removed.
 For example, consider binding the following properties to a `Map`:
@@ -1121,6 +1156,32 @@ For example, consider binding the following properties to a `Map`:
 The properties above will bind to a `Map` with `/key1`, `/key2` and `key3` as the keys in the map.
 
 NOTE: For YAML files, the brackets need to be surrounded by quotes for the keys to be parsed properly.
+
+
+[[boot-features-external-config-relaxed-binding-from-environment-variables]]
+===== Binding from Environment Variables
+Most operating systems impose strict rules around the names that can be used for environment variables.
+For example, Linux shell variables can contain only letters (`a` to `z` or `A` to `Z`), numbers (`0` to `9`) or the underscore character (`_`).
+By convention, Unix shell variables will also have their names in UPPERCASE.
+
+Spring Boot's relaxed binding rules are, as much as possible, designed to be compatible with these naming restrictions.
+
+To convert a property name in the canonical-form to an environment variable name you can follow these rules:
+
+* Replace dots (`.`) with underscores (`_`).
+* Remove any dashes (`-`).
+* Convert to uppercase.
+
+For example, the configuration property `spring.main.log-startup-info` would be an environment variable named `SPRING_MAIN_LOGSTARTUPINFO`.
+
+NOTE: Underscores cannot be used to replace the dashes in property names.
+If you attempt to use `SPRING_MAIN_LOG_STARTUP_INFO` with the example above, no value will be bound.
+
+Environment variables can also be used when binding to object lists.
+To bind to a `List`, the element number should be surrounded with underscores in the variable name.
+
+For example, the configuration property `my.acme[0].other` would use an environment variable named `MY_ACME_0_OTHER`.
+
 
 
 [[boot-features-external-config-complex-type-merge]]
@@ -1387,7 +1448,7 @@ The following table summarizes the features that are supported by `@Configuratio
 
 | <<boot-features-external-config-relaxed-binding,Relaxed binding>>
 | Yes
-| No
+| Limited (see note below)
 
 | <<appendix-configuration-metadata.adoc#configuration-metadata,Meta-data support>>
 | Yes
@@ -1399,7 +1460,12 @@ The following table summarizes the features that are supported by `@Configuratio
 |===
 
 If you define a set of configuration keys for your own components, we recommend you group them in a POJO annotated with `@ConfigurationProperties`.
-You should also be aware that, since `@Value` does not support relaxed binding, it is not a good candidate if you need to provide the value by using environment variables.
+Doing so will provide you with structured, type-safe object that you can inject into your own beans.
+
+If you do want to use `@Value`, we recommend that you refer to property names using their canonical form (kebab-case using only lowercase letters).
+This will allow Spring Boot to use the same logic as it does when relaxed binding `@ConfigurationProperties`.
+For example, `@Value("{demo.item-price}")` will pick up `demo.item-price` and `demo.itemPrice` forms from the `application.properties` file, as well as `DEMO_ITEMPRICE` from the system environment.
+If you used `@Value("{demo.itemPrice}")` instead, `demo.item-price` and `DEMO_ITEMPRICE` would not be considered.
 
 Finally, while you can write a `SpEL` expression in `@Value`, such expressions are not processed from <<boot-features-external-config-application-property-files,application property files>>.
 
