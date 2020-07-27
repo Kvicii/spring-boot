@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package io.spring.concourse.releasescripts.bintray;
+package io.spring.concourse.releasescripts.command;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Details for a single packaged file.
+ * Distribution properties.
  *
  * @author Phillip Webb
  */
-public class PackageFile {
+@ConfigurationProperties(prefix = "distribute")
+public class DistributeProperties {
 
-	private String name;
+	private List<String> optionalDeployments = new ArrayList<>();
 
-	private String sha256;
-
-	public String getName() {
-		return this.name;
+	public List<String> getOptionalDeployments() {
+		return this.optionalDeployments;
 	}
 
-	public String getSha256() {
-		return this.sha256;
+	public void setOptionalDeployments(List<String> optionalDeployments) {
+		this.optionalDeployments = optionalDeployments;
 	}
 
 }
