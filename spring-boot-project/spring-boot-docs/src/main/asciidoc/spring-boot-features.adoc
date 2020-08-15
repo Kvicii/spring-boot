@@ -426,6 +426,11 @@ You can also supply the JSON as a JNDI variable, as follows: `java:comp/env/spri
 ====
 
 
+NOTE: Although `null` values from the JSON will be added to the resulting property source, the `PropertySourcesPropertyResolver` treats `null` properties as missing values.
+This means that the JSON cannot override properties from lower order property sources with a `null` value.
+
+
+
 
 [[boot-features-external-config-random-values]]
 === Configuring Random Values
@@ -7463,7 +7468,7 @@ TIP: If multiple auto-configurations have to be defined, there is no need to ord
 
 Each test can use the runner to represent a particular use case.
 For instance, the sample below invokes a user configuration (`UserConfiguration`) and checks that the auto-configuration backs off properly.
-Invoking `run` provides a callback context that can be used with `Assert4J`.
+Invoking `run` provides a callback context that can be used with `AssertJ`.
 
 [source,java,indent=0]
 ----
