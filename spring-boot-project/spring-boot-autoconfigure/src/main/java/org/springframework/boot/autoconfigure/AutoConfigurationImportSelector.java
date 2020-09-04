@@ -107,12 +107,13 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 	/**
 	 * Return the {@link AutoConfigurationEntry} based on the {@link AnnotationMetadata}
 	 * of the importing {@link Configuration @Configuration} class.
+	 *
 	 * @param autoConfigurationMetadata the auto-configuration metadata
-	 * @param annotationMetadata the annotation metadata of the configuration class
+	 * @param annotationMetadata        the annotation metadata of the configuration class
 	 * @return the auto-configurations that should be imported
 	 */
 	protected AutoConfigurationEntry getAutoConfigurationEntry(AutoConfigurationMetadata autoConfigurationMetadata,
-			AnnotationMetadata annotationMetadata) {
+															   AnnotationMetadata annotationMetadata) {
 		// 判断是否开启了自动装配 默认是开启的
 		if (!isEnabled(annotationMetadata)) {
 			return EMPTY_ENTRY;
@@ -160,6 +161,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 	 * Return the appropriate {@link AnnotationAttributes} from the
 	 * {@link AnnotationMetadata}. By default this method will return attributes for
 	 * {@link #getAnnotationClass()}.
+	 *
 	 * @param metadata the annotation metadata
 	 * @return annotation attributes
 	 */
@@ -173,6 +175,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 
 	/**
 	 * Return the source annotation class used by the selector.
+	 *
 	 * @return the annotation class
 	 */
 	protected Class<?> getAnnotationClass() {
@@ -183,9 +186,10 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 	 * Return the auto-configuration class names that should be considered. By default
 	 * this method will load candidates using {@link SpringFactoriesLoader} with
 	 * {@link #getSpringFactoriesLoaderFactoryClass()}.
-	 * @param metadata the source metadata
+	 *
+	 * @param metadata   the source metadata
 	 * @param attributes the {@link #getAttributes(AnnotationMetadata) annotation
-	 * attributes}
+	 *                   attributes}
 	 * @return a list of candidate configurations
 	 */
 	protected List<String> getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) {
@@ -200,6 +204,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 	/**
 	 * Return the class used by {@link SpringFactoriesLoader} to load configuration
 	 * candidates.
+	 *
 	 * @return the factory class
 	 */
 	protected Class<?> getSpringFactoriesLoaderFactoryClass() {
@@ -220,8 +225,9 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 
 	/**
 	 * Handle any invalid excludes that have been specified.
+	 *
 	 * @param invalidExcludes the list of invalid excludes (will always have at least one
-	 * element)
+	 *                        element)
 	 */
 	protected void handleInvalidExcludes(List<String> invalidExcludes) {
 		StringBuilder message = new StringBuilder();
@@ -235,9 +241,10 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 
 	/**
 	 * Return any exclusions that limit the candidate configurations.
-	 * @param metadata the source metadata
+	 *
+	 * @param metadata   the source metadata
 	 * @param attributes the {@link #getAttributes(AnnotationMetadata) annotation
-	 * attributes}
+	 *                   attributes}
 	 * @return exclusions or an empty set
 	 */
 	protected Set<String> getExclusions(AnnotationMetadata metadata, AnnotationAttributes attributes) {
@@ -451,7 +458,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 		}
 
 		private List<String> sortAutoConfigurations(Set<String> configurations,
-				AutoConfigurationMetadata autoConfigurationMetadata) {
+													AutoConfigurationMetadata autoConfigurationMetadata) {
 			return new AutoConfigurationSorter(getMetadataReaderFactory(), autoConfigurationMetadata)
 					.getInPriorityOrder(configurations);
 		}
@@ -460,8 +467,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 			try {
 				return this.beanFactory.getBean(SharedMetadataReaderFactoryContextInitializer.BEAN_NAME,
 						MetadataReaderFactory.class);
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return new CachingMetadataReaderFactory(this.resourceLoader);
 			}
 		}
@@ -482,8 +488,9 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 		/**
 		 * Create an entry with the configurations that were contributed and their
 		 * exclusions.
+		 *
 		 * @param configurations the configurations that should be imported
-		 * @param exclusions the exclusions that were applied to the original list
+		 * @param exclusions     the exclusions that were applied to the original list
 		 */
 		AutoConfigurationEntry(Collection<String> configurations, Collection<String> exclusions) {
 			this.configurations = new ArrayList<>(configurations);
