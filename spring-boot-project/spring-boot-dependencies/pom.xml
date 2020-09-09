@@ -173,7 +173,7 @@
 		<quartz.version>2.3.2</quartz.version>
 		<querydsl.version>4.2.2</querydsl.version>
 		<rabbit-amqp-client.version>5.7.3</rabbit-amqp-client.version>
-		<reactor-bom.version>Dysprosium-SR10</reactor-bom.version>
+		<reactor-bom.version>Dysprosium-BUILD-SNAPSHOT</reactor-bom.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<reactive-streams.version>1.0.3</reactive-streams.version>
 		<rsocket.version>1.0.1</rsocket.version>
@@ -190,16 +190,16 @@
 		<spring-amqp.version>2.2.9.RELEASE</spring-amqp.version>
 		<spring-batch.version>4.2.4.RELEASE</spring-batch.version>
 		<spring-cloud-connectors.version>2.0.7.RELEASE</spring-cloud-connectors.version>
-		<spring-data-releasetrain.version>Moore-SR9</spring-data-releasetrain.version>
-		<spring-framework.version>5.2.8.RELEASE</spring-framework.version>
+		<spring-data-releasetrain.version>Moore-BUILD-SNAPSHOT</spring-data-releasetrain.version>
+		<spring-framework.version>5.2.9.BUILD-SNAPSHOT</spring-framework.version>
 		<spring-hateoas.version>1.0.5.RELEASE</spring-hateoas.version>
 		<spring-integration.version>5.2.8.RELEASE</spring-integration.version>
-		<spring-kafka.version>2.3.10.RELEASE</spring-kafka.version>
+		<spring-kafka.version>2.3.11.BUILD-SNAPSHOT</spring-kafka.version>
 		<spring-ldap.version>2.3.3.RELEASE</spring-ldap.version>
 		<spring-restdocs.version>2.0.4.RELEASE</spring-restdocs.version>
 		<spring-retry.version>1.2.5.RELEASE</spring-retry.version>
 		<spring-security.version>5.2.5.RELEASE</spring-security.version>
-		<spring-session-bom.version>Corn-SR3</spring-session-bom.version>
+		<spring-session-bom.version>Corn-BUILD-SNAPSHOT</spring-session-bom.version>
 		<spring-ws.version>3.0.9.RELEASE</spring-ws.version>
 		<sqlite-jdbc.version>3.28.0</sqlite-jdbc.version>
 		<sun-mail.version>${jakarta-mail.version}</sun-mail.version>
