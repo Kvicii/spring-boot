@@ -457,7 +457,6 @@ public class SpringApplication {
 	}
 
 	private void refreshContext(ConfigurableApplicationContext context) {
-		refresh(context);
 		if (this.registerShutdownHook) {
 			try {
 				// 钩子函数 在JVM退出时会关闭容器
@@ -466,6 +465,7 @@ public class SpringApplication {
 				// Not allowed in some environments.
 			}
 		}
+		refresh(context);
 	}
 
 	private void configureHeadlessProperty() {
