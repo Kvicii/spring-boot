@@ -173,7 +173,7 @@
 		<quartz.version>2.3.2</quartz.version>
 		<querydsl.version>4.2.2</querydsl.version>
 		<rabbit-amqp-client.version>5.7.3</rabbit-amqp-client.version>
-		<reactor-bom.version>Dysprosium-SR13</reactor-bom.version>
+		<reactor-bom.version>Dysprosium-BUILD-SNAPSHOT</reactor-bom.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<reactive-streams.version>1.0.3</reactive-streams.version>
 		<rsocket.version>1.0.3</rsocket.version>
@@ -191,7 +191,7 @@
 		<spring-batch.version>4.2.4.RELEASE</spring-batch.version>
 		<spring-cloud-connectors.version>2.0.7.RELEASE</spring-cloud-connectors.version>
 		<spring-data-releasetrain.version>Moore-SR11</spring-data-releasetrain.version>
-		<spring-framework.version>5.2.10.RELEASE</spring-framework.version>
+		<spring-framework.version>5.2.12.BUILD-SNAPSHOT</spring-framework.version>
 		<spring-hateoas.version>1.0.5.RELEASE</spring-hateoas.version>
 		<spring-integration.version>5.2.9.RELEASE</spring-integration.version>
 		<spring-kafka.version>2.3.12.RELEASE</spring-kafka.version>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,36 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.context.properties.scan.combined.c;
+package io.spring.concourse.releasescripts.sdkman;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
+ * {@link ConfigurationProperties @ConfigurationProperties} for SDKMAN.
+ *
  * @author Madhura Bhave
  */
-public class CombinedConfiguration {
+@ConfigurationProperties(prefix = "sdkman")
+public class SdkmanProperties {
 
-	@Component
-	@ConfigurationProperties(prefix = "b")
-	static class MyProperties {
+	private String consumerKey;
 
+	private String consumerToken;
+
+	public String getConsumerKey() {
+		return this.consumerKey;
+	}
+
+	public void setConsumerKey(String consumerKey) {
+		this.consumerKey = consumerKey;
+	}
+
+	public String getConsumerToken() {
+		return this.consumerToken;
+	}
+
+	public void setConsumerToken(String consumerToken) {
+		this.consumerToken = consumerToken;
 	}
 
 }
