@@ -45,13 +45,15 @@ import org.springframework.util.ClassUtils;
  * Note: In case of multiple {@code @Configuration} classes, later {@code @Bean}
  * definitions will override ones defined in earlier loaded files. This can be leveraged
  * to deliberately override certain bean definitions via an extra Configuration class.
+ * <p>
+ * SpringBoot启动过程Spring容器类的默认实现
  *
  * @author Phillip Webb
- * @since 1.0.0
  * @see #register(Class...)
  * @see #scan(String...)
  * @see ServletWebServerApplicationContext
  * @see AnnotationConfigServletWebApplicationContext
+ * @since 1.0.0
  */
 public class AnnotationConfigServletWebServerApplicationContext extends ServletWebServerApplicationContext
 		implements AnnotationConfigRegistry {
@@ -70,6 +72,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigServletWebServerApplicationContext() {
+		// 从classpath通过注解加载一些Bean的组件
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
@@ -78,6 +81,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * Create a new {@link AnnotationConfigServletWebServerApplicationContext} with the
 	 * given {@code DefaultListableBeanFactory}. The context needs to be populated through
 	 * {@link #register} calls and then manually {@linkplain #refresh refreshed}.
+	 *
 	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
 	 */
 	public AnnotationConfigServletWebServerApplicationContext(DefaultListableBeanFactory beanFactory) {
@@ -90,8 +94,9 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * Create a new {@link AnnotationConfigServletWebServerApplicationContext}, deriving
 	 * bean definitions from the given annotated classes and automatically refreshing the
 	 * context.
+	 *
 	 * @param annotatedClasses one or more annotated classes, e.g. {@code @Configuration}
-	 * classes
+	 *                         classes
 	 */
 	public AnnotationConfigServletWebServerApplicationContext(Class<?>... annotatedClasses) {
 		this();
@@ -103,6 +108,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * Create a new {@link AnnotationConfigServletWebServerApplicationContext}, scanning
 	 * for bean definitions in the given packages and automatically refreshing the
 	 * context.
+	 *
 	 * @param basePackages the packages to check for annotated classes
 	 */
 	public AnnotationConfigServletWebServerApplicationContext(String... basePackages) {
@@ -134,6 +140,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * <p>
 	 * Any call to this method must occur prior to calls to {@link #register(Class...)}
 	 * and/or {@link #scan(String...)}.
+	 *
 	 * @param beanNameGenerator the bean name generator
 	 * @see AnnotatedBeanDefinitionReader#setBeanNameGenerator
 	 * @see ClassPathBeanDefinitionScanner#setBeanNameGenerator
@@ -152,6 +159,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * <p>
 	 * Any call to this method must occur prior to calls to {@link #register(Class...)}
 	 * and/or {@link #scan(String...)}.
+	 *
 	 * @param scopeMetadataResolver the scope metadata resolver
 	 */
 	public void setScopeMetadataResolver(ScopeMetadataResolver scopeMetadataResolver) {
@@ -166,8 +174,9 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	 * <p>
 	 * Calls to {@code #register} are idempotent; adding the same annotated class more
 	 * than once has no additional effect.
+	 *
 	 * @param annotatedClasses one or more annotated classes, e.g. {@code @Configuration}
-	 * classes
+	 *                         classes
 	 * @see #scan(String...)
 	 * @see #refresh()
 	 */
@@ -180,6 +189,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 	/**
 	 * Perform a scan within the specified base packages. Note that {@link #refresh()}
 	 * must be called in order for the context to fully process the new class.
+	 *
 	 * @param basePackages the packages to check for annotated classes
 	 * @see #register(Class...)
 	 * @see #refresh()

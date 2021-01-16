@@ -31,6 +31,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoaderListener;
@@ -79,6 +80,10 @@ import java.util.Set;
  * Although this context can be used directly, most developers should consider using the
  * {@link AnnotationConfigServletWebServerApplicationContext} or
  * {@link XmlServletWebServerApplicationContext} variants.
+ *
+ * 加载Tomcat WEB容器的默认上下文 在{@link AbstractApplicationContext#onRefresh()} 中调用
+ *
+ * SpringBoot自身的扩展点 通过执行自身扩展点触发Tomcat容器的加载
  *
  * @author Phillip Webb
  * @author Dave Syer
@@ -135,6 +140,12 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		registerWebApplicationScopes();
 	}
 
+	/**
+	 * SpringBoot框架调用此方法进行Spring容器的刷新 该方法会调用到 {@link AbstractApplicationContext#refresh()} 方法
+	 *
+	 * @throws BeansException
+	 * @throws IllegalStateException
+	 */
 	@Override
 	public final void refresh() throws BeansException, IllegalStateException {
 		try {
@@ -145,6 +156,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		}
 	}
 
+	/**
+	 * Spring容器进行Tomcat容器刷新时 会回调至该方法进行Tomcat容器加载
+	 */
 	@Override
 	protected void onRefresh() {
 		super.onRefresh();
@@ -174,7 +188,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		WebServer webServer = this.webServer;
 		ServletContext servletContext = getServletContext();
 		if (webServer == null && servletContext == null) {
+			// 获取Web Server工厂对象
 			ServletWebServerFactory factory = getWebServerFactory();
+			// 创建内嵌的Web Server对象(如Tomcat Jetty)
 			this.webServer = factory.getWebServer(getSelfInitializer());
 		} else if (servletContext != null) {
 			try {
@@ -204,6 +220,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			throw new ApplicationContextException("Unable to start ServletWebServerApplicationContext due to multiple "
 					+ "ServletWebServerFactory beans : " + StringUtils.arrayToCommaDelimitedString(beanNames));
 		}
+		// 触发依赖注入 获取Bean
 		return getBeanFactory().getBean(beanNames[0], ServletWebServerFactory.class);
 	}
 

@@ -69,6 +69,7 @@ public class TomcatWebServer implements WebServer {
 
 	/**
 	 * Create a new {@link TomcatWebServer} instance.
+	 *
 	 * @param tomcat the underlying Tomcat server
 	 */
 	public TomcatWebServer(Tomcat tomcat) {
@@ -77,8 +78,11 @@ public class TomcatWebServer implements WebServer {
 
 	/**
 	 * Create a new {@link TomcatWebServer} instance.
-	 * @param tomcat the underlying Tomcat server
+	 *
+	 * @param tomcat    the underlying Tomcat server
 	 * @param autoStart if the server should be started
+	 *                  <p>
+	 *                  Tomcat容器的构造函数
 	 */
 	public TomcatWebServer(Tomcat tomcat, boolean autoStart) {
 		Assert.notNull(tomcat, "Tomcat Server must not be null");
@@ -103,6 +107,7 @@ public class TomcatWebServer implements WebServer {
 				});
 
 				// Start the server to trigger initialization listeners
+				// 启动Tomcat容器 初始化了Spring的容器WebApplicationContext `Initializing Spring embedded WebApplicationContext`
 				this.tomcat.start();
 
 				// We can re-throw failure exception directly in the main thread
@@ -110,16 +115,14 @@ public class TomcatWebServer implements WebServer {
 
 				try {
 					ContextBindings.bindClassLoader(context, context.getNamingToken(), getClass().getClassLoader());
-				}
-				catch (NamingException ex) {
+				} catch (NamingException ex) {
 					// Naming is not enabled. Continue
 				}
 
 				// Unlike Jetty, all Tomcat threads are daemon threads. We create a
 				// blocking non-daemon to stop immediate shutdown
 				startDaemonAwaitThread();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				stopSilently();
 				destroySilently();
 				throw new WebServerException("Unable to start embedded Tomcat", ex);
@@ -202,16 +205,13 @@ public class TomcatWebServer implements WebServer {
 				this.started = true;
 				logger.info("Tomcat started on port(s): " + getPortsDescription(true) + " with context path '"
 						+ getContextPath() + "'");
-			}
-			catch (ConnectorStartFailedException ex) {
+			} catch (ConnectorStartFailedException ex) {
 				stopSilently();
 				throw ex;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				PortInUseException.throwIfPortBindingException(ex, () -> this.tomcat.getConnector().getPort());
 				throw new WebServerException("Unable to start embedded Tomcat server", ex);
-			}
-			finally {
+			} finally {
 				Context context = findContext();
 				ContextBindings.unbindClassLoader(context, context.getNamingToken(), getClass().getClassLoader());
 			}
@@ -234,8 +234,7 @@ public class TomcatWebServer implements WebServer {
 	private void stopSilently() {
 		try {
 			stopTomcat();
-		}
-		catch (LifecycleException ex) {
+		} catch (LifecycleException ex) {
 			// Ignore
 		}
 	}
@@ -243,8 +242,7 @@ public class TomcatWebServer implements WebServer {
 	private void destroySilently() {
 		try {
 			this.tomcat.destroy();
-		}
-		catch (LifecycleException ex) {
+		} catch (LifecycleException ex) {
 			// Ignore
 		}
 	}
@@ -275,8 +273,7 @@ public class TomcatWebServer implements WebServer {
 	private void stopProtocolHandler(Connector connector) {
 		try {
 			connector.getProtocolHandler().stop();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.error("Cannot pause connector: ", ex);
 		}
 	}
@@ -288,8 +285,7 @@ public class TomcatWebServer implements WebServer {
 					((TomcatEmbeddedContext) child).deferredLoadOnStartup();
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (ex instanceof WebServerException) {
 				throw (WebServerException) ex;
 			}
@@ -310,15 +306,12 @@ public class TomcatWebServer implements WebServer {
 				try {
 					stopTomcat();
 					this.tomcat.destroy();
-				}
-				catch (LifecycleException ex) {
+				} catch (LifecycleException ex) {
 					// swallow and continue
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new WebServerException("Unable to stop embedded Tomcat", ex);
-			}
-			finally {
+			} finally {
 				if (wasStarted) {
 					containerCounter.decrementAndGet();
 				}
@@ -355,6 +348,7 @@ public class TomcatWebServer implements WebServer {
 
 	/**
 	 * Returns access to the underlying Tomcat server.
+	 *
 	 * @return the Tomcat server
 	 */
 	public Tomcat getTomcat() {

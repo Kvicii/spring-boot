@@ -279,12 +279,14 @@ public class SpringApplication {
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		// 存储启动类
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
-		// 判断web应用类型 是servlet(传统MVC)应用还是reactive应用(WebFlux)
+		// 推断web应用类型 是servlet(传统MVC)应用还是reactive应用(WebFlux)
 		this.webApplicationType = WebApplicationType.deduceFromClasspath();
 		// 设置初始化器 最后调用初始化器
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
-		// 设置监听器
-		// org.springframework.boot.autoconfigure.BackgroundPreinitializer
+		/**
+		 * 设置监听器
+		 * {@link org.springframework.boot.autoconfigure.BackgroundPreinitializer}
+		 */
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
 		// 初始化mainApplicationClass属性 推断并设置项目main方法的主程序启动类
 		this.mainApplicationClass = deduceMainApplicationClass();
@@ -319,8 +321,9 @@ public class SpringApplication {
 		// 初始化应用上下文和异常报告集合
 		ConfigurableApplicationContext context = null;
 		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
+		// 设置一些环境变量
 		configureHeadlessProperty();
-		// 1.获取并启动监听器
+		// 1.获取SpringApplicationRunListener的实现 执行回调
 		SpringApplicationRunListeners listeners = getRunListeners(args);
 		listeners.starting();
 		try {
@@ -332,9 +335,10 @@ public class SpringApplication {
 			configureIgnoreBeanInfo(environment);
 			// 服务启动时准备的banner打印器
 			Banner printedBanner = printBanner(environment);
-			// 3.创建spring容器
+			// 3.创建spring容器上下文
 			context = createApplicationContext();
 			// 异常报告器 还是从spring.factories中获取的逻辑
+			// 即获取实现了SpringBootExceptionReporter接口的一些类
 			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,
 					new Class[]{ConfigurableApplicationContext.class}, context);
 			// 4.spring容器的前置处理 将项目启动类注入容器
@@ -387,6 +391,7 @@ public class SpringApplication {
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
 		// 监听器环境准备 广播ApplicationEnvironmentPreparedEvent事件
 		ConfigurationPropertySources.attach(environment);
+		// 执行SpringApplicationRunListeners的回调
 		listeners.environmentPrepared(environment);
 		// 将设置好的环境绑定到springApplication
 		bindToSpringApplication(environment);
@@ -426,7 +431,7 @@ public class SpringApplication {
 		context.setEnvironment(environment);
 		// 设置上下文的bean生成器和资源加载器
 		postProcessApplicationContext(context);
-		// 执行容器中的ApplicationContextInitializer 包括spring.factories和自定义的实例
+		// 执行容器中的ApplicationContextInitializer(在构造函数创建SpringApplication时载入的) 包括spring.factories和自定义的实例
 		applyInitializers(context);
 		// 触发监听器的contextPrepared事件方法
 		listeners.contextPrepared(context);
@@ -435,7 +440,7 @@ public class SpringApplication {
 			logStartupProfileInfo(context);
 		}
 		// Add boot specific singleton beans
-		// 注册启动参数bean 将容器指定的参数封装成bean注入容器
+		// 将指定的参数设置到容器
 		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
 		beanFactory.registerSingleton("springApplicationArguments", applicationArguments);
 		if (printedBanner != null) {
@@ -465,6 +470,7 @@ public class SpringApplication {
 				// Not allowed in some environments.
 			}
 		}
+		// 实际的容器刷新操作 最终会调用到Spring的AbstractApplicationContext#refresh方法进行处理
 		refresh(context);
 	}
 
@@ -476,9 +482,10 @@ public class SpringApplication {
 	private SpringApplicationRunListeners getRunListeners(String[] args) {
 		Class<?>[] types = new Class<?>[]{SpringApplication.class, String[].class};
 		/**
-		 * 加载以下类型的监听器 org.springframework.boot.autoconfigure.condition.OnBeanCondition
-		 * org.springframework.boot.autoconfigure.condition.OnClassCondition
-		 * org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition
+		 * 加载以下类型的监听器
+		 * {@link org.springframework.boot.autoconfigure.condition.OnBeanCondition}
+		 * {@link org.springframework.boot.autoconfigure.condition.OnClassCondition}
+		 * {@link org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition}
 		 */
 		return new SpringApplicationRunListeners(logger,
 				getSpringFactoriesInstances(SpringApplicationRunListener.class, types, this, args));
@@ -493,8 +500,8 @@ public class SpringApplication {
 		// Use names and ensure unique to protect against duplicates
 		/**
 		 * 加载META-INF/spring.factories指定的初始化器
-		 * org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer
-		 * org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener
+		 * {@link org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer}
+		 * {@link org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener}
 		 */
 		Set<String> names = new LinkedHashSet<>(SpringFactoriesLoader.loadFactoryNames(type, classLoader));
 		// 实例化 排序
@@ -661,6 +668,8 @@ public class SpringApplication {
 						"Unable create a default ApplicationContext, please specify an ApplicationContextClass", ex);
 			}
 		}
+		// web应用类型是servlet的 Spring的容器类是AnnotationConfigServletWebServerApplicationContext
+		// 该步骤作用是实例化Spring的容器类并强转为ConfigurableApplicationContext
 		return (ConfigurableApplicationContext) BeanUtils.instantiateClass(contextClass);
 	}
 
@@ -769,6 +778,7 @@ public class SpringApplication {
 		if (this.environment != null) {
 			loader.setEnvironment(this.environment);
 		}
+		// 加载Spring Boot启动类 转换为BenDefinition并进行注册
 		loader.load();
 	}
 
