@@ -83,6 +83,10 @@ import java.lang.annotation.Target;
 @Import(AutoConfigurationImportSelector.class) // 可以帮助springboot应用将符合条件的@Configuration配置类都加载到当前spring容器
 public @interface EnableAutoConfiguration {
 
+	/**
+	 * Environment property that can be used to override when auto-configuration is
+	 * enabled.
+	 */
 	String ENABLED_OVERRIDE_PROPERTY = "spring.boot.enableautoconfiguration";
 
 	/**
