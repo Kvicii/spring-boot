@@ -43,7 +43,8 @@
 		<atomikos.version>4.0.6</atomikos.version>
 		<awaitility.version>4.0.3</awaitility.version>
 		<bitronix.version>2.1.4</bitronix.version>
-		<byte-buddy.version>1.10.19</byte-buddy.version>
+<!--		<byte-buddy.version>1.10.19</byte-buddy.version>-->
+		<byte-buddy.version>1.10.18</byte-buddy.version>
 		<caffeine.version>2.8.8</caffeine.version>
 		<cassandra-driver.version>3.7.2</cassandra-driver.version>
 		<classmate.version>1.5.1</classmate.version>
@@ -57,7 +58,8 @@
 		<dependency-management-plugin.version>1.0.11.RELEASE</dependency-management-plugin.version>
 		<db2-jdbc.version>11.5.5.0</db2-jdbc.version>
 		<derby.version>10.14.2.0</derby.version>
-		<dropwizard-metrics.version>4.1.17</dropwizard-metrics.version>
+<!--		<dropwizard-metrics.version>4.1.17</dropwizard-metrics.version>-->
+		<dropwizard-metrics.version>4.1.16</dropwizard-metrics.version>
 		<ehcache.version>2.10.6</ehcache.version>
 		<ehcache3.version>3.8.1</ehcache3.version>
 		<embedded-mongo.version>2.2.0</embedded-mongo.version>
@@ -135,7 +137,8 @@
 		<joda-time.version>2.10.9</joda-time.version>
 		<jolokia.version>1.6.2</jolokia.version>
 		<!-- Deprecated in favor of "johnzon.version" -->
-		<johnzon-jsonb.version>1.2.9</johnzon-jsonb.version>
+<!--		<johnzon-jsonb.version>1.2.9</johnzon-jsonb.version>-->
+		<johnzon-jsonb.version>1.2.8</johnzon-jsonb.version>
 		<johnzon.version>${johnzon-jsonb.version}</johnzon.version>
 		<jooq.version>3.12.4</jooq.version>
 		<jsonassert.version>1.5.0</jsonassert.version>
